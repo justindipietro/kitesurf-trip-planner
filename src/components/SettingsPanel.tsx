@@ -33,7 +33,7 @@ export function SettingsPanel({
     const today = new Date();
     const daysUntilThursday = (4 - today.getDay() + 7) % 7 || 7;
     const endD = new Date(today);
-    endD.setDate(today.getDate() + daysUntilThursday + 4);
+    endD.setDate(today.getDate() + daysUntilThursday + 3);
     return `${endD.getFullYear()}-${String(endD.getMonth() + 1).padStart(2, "0")}-${String(endD.getDate()).padStart(2, "0")}`;
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -224,9 +224,9 @@ export function SettingsPanel({
           value={startDate}
           onChange={(val) => {
             setStartDate(val);
-            // Auto-set end date to 4 days after start
+            // Auto-set end date to 3 days after start (Thu→Sun)
             const d = new Date(val + "T00:00:00");
-            d.setDate(d.getDate() + 4);
+            d.setDate(d.getDate() + 3);
             const auto = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
             setEndDate(auto);
             handleSettingChange();
