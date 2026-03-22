@@ -52,11 +52,11 @@ describe("SettingsPanel", () => {
     expect(screen.getByTestId("search-button")).not.toBeDisabled();
   });
 
-  it("shows validation errors on search with missing dates", () => {
+  it("shows validation errors on search with invalid wind threshold", () => {
     render(<SettingsPanel {...defaultProps} />);
+    fireEvent.change(screen.getByTestId("wind-threshold"), { target: { value: "0" } });
     fireEvent.click(screen.getByTestId("search-button"));
-    // Origin is pre-filled with NYC so no origin error, but dates are missing
-    expect(screen.getByText("Start date is required")).toBeInTheDocument();
+    expect(screen.getByText("Wind threshold must be a whole number between 5 and 50 knots")).toBeInTheDocument();
     expect(defaultProps.onSearch).not.toHaveBeenCalled();
   });
 

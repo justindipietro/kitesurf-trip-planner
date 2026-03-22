@@ -21,8 +21,21 @@ export function SettingsPanel({
   const [directFlightsOnly, setDirectFlightsOnly] = useState(true);
   const [deltaPreferred, setDeltaPreferred] = useState(true);
   const [windThresholdKnots, setWindThresholdKnots] = useState(15);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(() => {
+    const today = new Date();
+    const day = today.getDay(); // 0=Sun, 4=Thu
+    const daysUntilThursday = (4 - day + 7) % 7 || 7; // always next Thursday, not today
+    const nextThursday = new Date(today);
+    nextThursday.setDate(today.getDate() + daysUntilThursday);
+    return `${nextThursday.getFullYear()}-${String(nextThursday.getMonth() + 1).padStart(2, "0")}-${String(nextThursday.getDate()).padStart(2, "0")}`;
+  });
+  const [endDate, setEndDate] = useState(() => {
+    const today = new Date();
+    const daysUntilThursday = (4 - today.getDay() + 7) % 7 || 7;
+    const endD = new Date(today);
+    endD.setDate(today.getDate() + daysUntilThursday + 4);
+    return `${endD.getFullYear()}-${String(endD.getMonth() + 1).padStart(2, "0")}-${String(endD.getDate()).padStart(2, "0")}`;
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   function handleSettingChange() {
