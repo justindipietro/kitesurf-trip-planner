@@ -97,6 +97,11 @@ export function ResultsList({
                   <span className="result-travel" data-testid="flight-duration">
                     ⏱ {formatDuration(dest.travelDetail.shortestFlightMinutes)}
                   </span>
+                  {dest.travelDetail.lowestPriceUsd != null && (
+                    <span className="result-price" data-testid="flight-price">
+                      💲{dest.travelDetail.lowestPriceUsd}
+                    </span>
+                  )}
                 </>
               )}
             </div>

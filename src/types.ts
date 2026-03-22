@@ -81,6 +81,7 @@ export interface FlightDetail {
   type: "flight";
   availableFlights: number;
   shortestFlightMinutes: number;
+  lowestPriceUsd?: number;
   flights?: Flight[];
 }
 

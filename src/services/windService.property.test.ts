@@ -156,17 +156,28 @@ describe("Property 13: Graceful exclusion of locations with missing data", () =>
                 ok: true,
                 json: () =>
                   Promise.resolve({
-                    daily: { wind_speed_10m_max: null },
+                    hourly: { time: null, wind_speed_10m: null },
                   }),
               });
             }
 
-            // Valid data: return some wind speeds
+            // Valid data: return hourly wind speeds with daytime hours
+            const times: string[] = [];
+            const speeds: number[] = [];
+            for (let day = 0; day < 3; day++) {
+              const d = new Date("2025-07-01");
+              d.setDate(d.getDate() + day);
+              const ds = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+              for (let h = 0; h < 24; h++) {
+                times.push(`${ds}T${String(h).padStart(2, "0")}:00`);
+                speeds.push(h >= 7 && h < 19 ? 18.52 : 5.0);
+              }
+            }
             return Promise.resolve({
               ok: true,
               json: () =>
                 Promise.resolve({
-                  daily: { wind_speed_10m_max: [15.0, 20.0, 18.0] },
+                  hourly: { time: times, wind_speed_10m: speeds },
                 }),
             });
           })

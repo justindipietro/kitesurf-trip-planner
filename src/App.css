@@ -318,6 +318,11 @@ body {
   gap: 0.3rem;
 }
 
+.result-price {
+  color: #4ade80;
+  font-weight: 600;
+}
+
 /* Date Picker */
 .datepicker-wrapper {
   position: relative;

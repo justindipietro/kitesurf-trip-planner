@@ -83,10 +83,12 @@ function App() {
           );
           if (!flight) continue;
           const shortest = Math.min(...flight.flights.map((f) => f.durationMinutes));
+          const lowestPrice = Math.min(...flight.flights.map((f) => f.priceUsd));
           travelDetail = {
             type: "flight",
             availableFlights: flight.flights.length,
             shortestFlightMinutes: shortest,
+            lowestPriceUsd: lowestPrice,
             flights: flight.flights,
           };
         }
