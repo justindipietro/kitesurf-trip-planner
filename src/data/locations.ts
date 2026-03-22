@@ -29,6 +29,8 @@ export const LOCATION_CATALOG: Location[] = [
   { name: "Corpus Christi, Texas", latitude: 27.8006, longitude: -97.3964, airportCode: "CRP" },
   { name: "Key West, Florida", latitude: 24.5551, longitude: -81.7800, airportCode: "EYW" },
   { name: "Sarasota, Florida", latitude: 27.3364, longitude: -82.5307, airportCode: "SRQ" },
+  { name: "Cocoa Beach, Florida", latitude: 28.3200, longitude: -80.6076, airportCode: "MLB" },
+  { name: "Cape Canaveral, Florida", latitude: 28.3922, longitude: -80.6077, airportCode: "MLB" },
   { name: "Virginia Beach, Virginia", latitude: 36.8529, longitude: -75.9780, airportCode: "ORF" },
   { name: "Cape Cod, Massachusetts", latitude: 41.6688, longitude: -70.2962, airportCode: "HYA" },
   { name: "Squamish, Canada", latitude: 49.7016, longitude: -123.1558, airportCode: "YVR" },
