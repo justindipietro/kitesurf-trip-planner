@@ -29,6 +29,8 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
+  padding-top: max(2rem, env(safe-area-inset-top));
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
 }
 
 .app-layout {
