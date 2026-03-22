@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import "./App.css";
+import { Analytics } from "@vercel/analytics/react";
 import { SettingsPanel } from "./components/SettingsPanel";
 import { ResultsList } from "./components/ResultsList";
 import { loadLocationCatalog } from "./data/locations";
@@ -129,6 +130,7 @@ function App() {
 
   return (
     <div className="app">
+      <Analytics />
       <header className="app-header">
         <h1>🪁 Kitesurf Trip Planner</h1>
         <p>Find the windiest spots for Justin, Dan and Rich's next session</p>
