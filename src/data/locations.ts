@@ -32,6 +32,9 @@ export const LOCATION_CATALOG: Location[] = [
   { name: "Cocoa Beach, Florida", latitude: 28.3200, longitude: -80.6076, airportCode: "MLB" },
   { name: "Cape Canaveral, Florida", latitude: 28.3922, longitude: -80.6077, airportCode: "MLB" },
   { name: "Virginia Beach, Virginia", latitude: 36.8529, longitude: -75.9780, airportCode: "ORF" },
+  { name: "Napeague Harbor, New York", latitude: 41.0048, longitude: -72.0579, airportCode: "ISP" },
+  { name: "Long Beach Island, New Jersey", latitude: 39.6340, longitude: -74.1910, airportCode: "ACY" },
+  { name: "Sandy Hook, New Jersey", latitude: 40.4619, longitude: -73.9863, airportCode: "EWR" },
   { name: "Cape Cod, Massachusetts", latitude: 41.6688, longitude: -70.2962, airportCode: "HYA" },
   { name: "Squamish, Canada", latitude: 49.7016, longitude: -123.1558, airportCode: "YVR" },
 
