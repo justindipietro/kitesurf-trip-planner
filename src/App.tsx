@@ -129,7 +129,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>🪁 Kitesurf Trip Planner</h1>
-        <p>Find the windiest spots for your next session</p>
+        <p>Find the windiest spots for Justin, Dan and Rich's next session</p>
       </header>
       <div className="app-layout">
         <div className="app-left">
