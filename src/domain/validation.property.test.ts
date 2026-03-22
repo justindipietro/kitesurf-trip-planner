@@ -345,21 +345,6 @@ describe("Property 7: Search is blocked when any setting is invalid", () => {
   /** Arbitrary for a valid travel mode */
   const travelModeArb = fc.constantFrom<"drive" | "flight">("drive", "flight");
 
-  /** Build a valid SearchSettings base */
-  const validSettingsArb = fc.tuple(
-    validOriginArb,
-    travelModeArb,
-    validWindArb,
-    validDateRangeArb
-  ).map(([origin, travelMode, wind, dates]): SearchSettings => ({
-    origin,
-    travelMode,
-    windThresholdKnots: wind,
-    startDate: dates.startDate,
-    endDate: dates.endDate,
-    ...(travelMode === "drive" ? { maxDriveHours: 8 } : {}),
-  }));
-
   it("returns invalid when origin is invalid (all other fields valid)", () => {
     fc.assert(
       fc.property(

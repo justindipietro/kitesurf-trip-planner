@@ -19,6 +19,7 @@ const flightArb: fc.Arbitrary<Flight> = fc.record({
   airline: fc.constantFrom(...AIRLINES),
   durationMinutes: fc.integer({ min: 30, max: 1200 }),
   isDirect: fc.boolean(),
+  priceUsd: fc.integer({ min: 50, max: 2000 }),
 });
 
 const flightArrayArb = fc.array(flightArb, { minLength: 0, maxLength: 30 });

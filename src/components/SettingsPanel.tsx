@@ -64,15 +64,7 @@ export function SettingsPanel({
     handleSettingChange();
   }
 
-  function handleStartDateChange(e: ChangeEvent<HTMLInputElement>) {
-    setStartDate(e.target.value);
-    handleSettingChange();
-  }
-
-  function handleEndDateChange(e: ChangeEvent<HTMLInputElement>) {
-    setEndDate(e.target.value);
-    handleSettingChange();
-  }
+  // Date changes are handled inline via DatePicker onChange callbacks
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();

@@ -20,11 +20,11 @@ const MOCK_DRIVE_DATA: DriveData[] = [
 const MOCK_FLIGHT_DATA: FlightData[] = [
   {
     locationName: "Tarifa, Spain",
-    flights: [{ airline: "Delta", durationMinutes: 480, isDirect: true }],
+    flights: [{ airline: "Delta", durationMinutes: 480, isDirect: true, priceUsd: 350 }],
   },
   {
     locationName: "Cabarete, Dominican Republic",
-    flights: [{ airline: "United", durationMinutes: 240, isDirect: true }],
+    flights: [{ airline: "United", durationMinutes: 240, isDirect: true, priceUsd: 280 }],
   },
 ];
 

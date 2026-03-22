@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import * as fc from "fast-check";
-import { LOCATION_CATALOG, loadLocationCatalog } from "./locations";
+import { loadLocationCatalog } from "./locations";
 
 // Feature: kitesurf-trip-planner, Property 17: Location catalog entries have all required fields and unique names
 

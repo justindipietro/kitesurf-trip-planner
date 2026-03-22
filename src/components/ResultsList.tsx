@@ -18,7 +18,7 @@ function formatDuration(totalMinutes: number): string {
 
 export function ResultsList({
   results,
-  travelMode,
+  travelMode: _travelMode,
   message,
   error,
   origin,

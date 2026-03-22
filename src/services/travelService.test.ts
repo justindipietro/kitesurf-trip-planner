@@ -35,9 +35,9 @@ describe("haversineDistanceKm", () => {
 describe("filterDirectFlights", () => {
   it("returns only direct flights", () => {
     const flights: Flight[] = [
-      { airline: "Delta", durationMinutes: 120, isDirect: true },
-      { airline: "United", durationMinutes: 180, isDirect: false },
-      { airline: "American", durationMinutes: 150, isDirect: true },
+      { airline: "Delta", durationMinutes: 120, isDirect: true, priceUsd: 200 },
+      { airline: "United", durationMinutes: 180, isDirect: false, priceUsd: 300 },
+      { airline: "American", durationMinutes: 150, isDirect: true, priceUsd: 250 },
     ];
     const result = filterDirectFlights(flights);
     expect(result).toHaveLength(2);
@@ -46,15 +46,15 @@ describe("filterDirectFlights", () => {
 
   it("returns empty array when no direct flights", () => {
     const flights: Flight[] = [
-      { airline: "United", durationMinutes: 180, isDirect: false },
+      { airline: "United", durationMinutes: 180, isDirect: false, priceUsd: 300 },
     ];
     expect(filterDirectFlights(flights)).toHaveLength(0);
   });
 
   it("returns all flights when all are direct", () => {
     const flights: Flight[] = [
-      { airline: "Delta", durationMinutes: 120, isDirect: true },
-      { airline: "JetBlue", durationMinutes: 130, isDirect: true },
+      { airline: "Delta", durationMinutes: 120, isDirect: true, priceUsd: 200 },
+      { airline: "JetBlue", durationMinutes: 130, isDirect: true, priceUsd: 220 },
     ];
     expect(filterDirectFlights(flights)).toHaveLength(2);
   });
@@ -67,10 +67,10 @@ describe("filterDirectFlights", () => {
 describe("sortFlightsByDeltaPreference", () => {
   it("places Delta flights before others", () => {
     const flights: Flight[] = [
-      { airline: "United", durationMinutes: 180, isDirect: true },
-      { airline: "Delta", durationMinutes: 120, isDirect: true },
-      { airline: "American", durationMinutes: 150, isDirect: false },
-      { airline: "Delta", durationMinutes: 200, isDirect: false },
+      { airline: "United", durationMinutes: 180, isDirect: true, priceUsd: 300 },
+      { airline: "Delta", durationMinutes: 120, isDirect: true, priceUsd: 200 },
+      { airline: "American", durationMinutes: 150, isDirect: false, priceUsd: 250 },
+      { airline: "Delta", durationMinutes: 200, isDirect: false, priceUsd: 280 },
     ];
     const result = sortFlightsByDeltaPreference(flights);
     expect(result[0].airline).toBe("Delta");
@@ -80,9 +80,9 @@ describe("sortFlightsByDeltaPreference", () => {
 
   it("preserves relative order within Delta group", () => {
     const flights: Flight[] = [
-      { airline: "Delta", durationMinutes: 200, isDirect: false },
-      { airline: "United", durationMinutes: 180, isDirect: true },
-      { airline: "Delta", durationMinutes: 120, isDirect: true },
+      { airline: "Delta", durationMinutes: 200, isDirect: false, priceUsd: 280 },
+      { airline: "United", durationMinutes: 180, isDirect: true, priceUsd: 300 },
+      { airline: "Delta", durationMinutes: 120, isDirect: true, priceUsd: 200 },
     ];
     const result = sortFlightsByDeltaPreference(flights);
     expect(result[0].durationMinutes).toBe(200);
@@ -91,9 +91,9 @@ describe("sortFlightsByDeltaPreference", () => {
 
   it("preserves relative order within non-Delta group", () => {
     const flights: Flight[] = [
-      { airline: "United", durationMinutes: 180, isDirect: true },
-      { airline: "Delta", durationMinutes: 120, isDirect: true },
-      { airline: "American", durationMinutes: 150, isDirect: false },
+      { airline: "United", durationMinutes: 180, isDirect: true, priceUsd: 300 },
+      { airline: "Delta", durationMinutes: 120, isDirect: true, priceUsd: 200 },
+      { airline: "American", durationMinutes: 150, isDirect: false, priceUsd: 250 },
     ];
     const result = sortFlightsByDeltaPreference(flights);
     // Delta first, then United, then American (original non-Delta order preserved)
@@ -108,8 +108,8 @@ describe("sortFlightsByDeltaPreference", () => {
 
   it("handles no Delta flights", () => {
     const flights: Flight[] = [
-      { airline: "United", durationMinutes: 180, isDirect: true },
-      { airline: "American", durationMinutes: 150, isDirect: false },
+      { airline: "United", durationMinutes: 180, isDirect: true, priceUsd: 300 },
+      { airline: "American", durationMinutes: 150, isDirect: false, priceUsd: 250 },
     ];
     const result = sortFlightsByDeltaPreference(flights);
     expect(result).toHaveLength(2);
