@@ -869,3 +869,160 @@ body {
     align-items: flex-start;
   }
 }
+
+/* Wetsuit recommendation badge */
+.result-wetsuit {
+  position: relative;
+  color: #c084fc;
+  font-weight: 500;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.wetsuit-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--surface-light);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  min-width: 240px;
+  max-width: 300px;
+  z-index: 200;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  flex-direction: column;
+  gap: 0.3rem;
+  pointer-events: none;
+}
+
+.result-wetsuit:hover .wetsuit-tooltip,
+.wetsuit-stat:hover .wetsuit-tooltip {
+  display: flex;
+}
+
+.wetsuit-tooltip-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #c084fc;
+}
+
+.wetsuit-tooltip-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.wetsuit-tooltip-detail {
+  font-size: 0.75rem;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+/* Wetsuit stat in detail hero */
+.wetsuit-stat {
+  position: relative;
+  cursor: default;
+}
+
+.wetsuit-value {
+  font-size: 1.2rem !important;
+}
+
+/* Wetsuit card in detail view */
+.wetsuit-card {
+  background: var(--surface);
+  border: 1px solid var(--surface-light);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.wetsuit-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.wetsuit-card-label {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #c084fc;
+}
+
+.wetsuit-card-thickness {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg);
+  padding: 0.15rem 0.6rem;
+  border-radius: 4px;
+}
+
+.wetsuit-card-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.wetsuit-card-details {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.wetsuit-card-details li {
+  font-size: 0.85rem;
+  color: var(--text);
+  padding-left: 1rem;
+  position: relative;
+}
+
+.wetsuit-card-details li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #c084fc;
+}
+
+.wetsuit-card-tips {
+  border-top: 1px solid var(--surface-light);
+  padding-top: 0.6rem;
+}
+
+.wetsuit-tips-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.wetsuit-card-tips ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.wetsuit-card-tips li {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding-left: 1rem;
+  position: relative;
+}
+
+.wetsuit-card-tips li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--surface-light);
+}

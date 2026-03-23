@@ -1,4 +1,5 @@
 import type { RankedDestination } from "../types";
+import { getWetsuitRecommendation } from "../domain/wetsuit";
 
 interface DestinationDetailProps {
   destination: RankedDestination;
@@ -103,6 +104,22 @@ export function DestinationDetail({ destination, origin, onBack }: DestinationDe
               <span className="detail-stat-unit">water temp</span>
             </div>
           )}
+          {destination.averageWaterTempF != null && (() => {
+            const rec = getWetsuitRecommendation(destination.averageWaterTempF);
+            return (
+              <div className="detail-stat wetsuit-stat">
+                <span className="detail-stat-value wetsuit-value">🩱</span>
+                <span className="detail-stat-unit">{rec.label}</span>
+                <span className="wetsuit-tooltip">
+                  <span className="wetsuit-tooltip-title">{rec.label} ({rec.thickness})</span>
+                  <span className="wetsuit-tooltip-note">{rec.notes}</span>
+                  {rec.details.map((d, i) => (
+                    <span key={i} className="wetsuit-tooltip-detail">• {d}</span>
+                  ))}
+                </span>
+              </div>
+            );
+          })()}
         </div>
       </div>
 
@@ -181,6 +198,38 @@ export function DestinationDetail({ destination, origin, onBack }: DestinationDe
       </div>
 
       {/* Travel section */}
+      {destination.averageWaterTempF != null && (() => {
+        const rec = getWetsuitRecommendation(destination.averageWaterTempF);
+        return (
+          <div className="detail-section">
+            <div className="detail-section-header">
+              <h3>🩱 Wetsuit Recommendation</h3>
+            </div>
+            <div className="wetsuit-card">
+              <div className="wetsuit-card-top">
+                <span className="wetsuit-card-label">{rec.label}</span>
+                <span className="wetsuit-card-thickness">{rec.thickness}</span>
+              </div>
+              <p className="wetsuit-card-note">{rec.notes}</p>
+              <ul className="wetsuit-card-details">
+                {rec.details.map((d, i) => (
+                  <li key={i}>{d}</li>
+                ))}
+              </ul>
+              <div className="wetsuit-card-tips">
+                <span className="wetsuit-tips-label">Tips</span>
+                <ul>
+                  <li>Thickness notation (e.g. 3/2mm) = torso/limbs</li>
+                  <li>Fit matters more than thickness — avoid water flushing</li>
+                  <li>Factor both air and water temp for comfort</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Travel section (original) */}
       <div className="detail-section">
         {travelDetail.type === "drive" && (
           <>

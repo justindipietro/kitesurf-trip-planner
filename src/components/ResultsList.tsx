@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { RankedDestination, TravelMode } from "../types";
 import { DestinationDetail } from "./DestinationDetail";
+import { getWetsuitRecommendation } from "../domain/wetsuit";
 
 interface ResultsListProps {
   results: RankedDestination[] | null;
@@ -112,6 +113,20 @@ export function ResultsList({
               {dest.averageWaterTempF != null && (
                 <span className="result-temp water" data-testid="water-temp">
                   🌊 {Math.round(dest.averageWaterTempF)}°F
+                </span>
+              )}
+              {dest.averageWaterTempF != null && (
+                <span className="result-wetsuit" data-testid="wetsuit-rec">
+                  🩱 {getWetsuitRecommendation(dest.averageWaterTempF).label}
+                  <span className="wetsuit-tooltip">
+                    <span className="wetsuit-tooltip-title">
+                      {getWetsuitRecommendation(dest.averageWaterTempF).label} ({getWetsuitRecommendation(dest.averageWaterTempF).thickness})
+                    </span>
+                    <span className="wetsuit-tooltip-note">{getWetsuitRecommendation(dest.averageWaterTempF).notes}</span>
+                    {getWetsuitRecommendation(dest.averageWaterTempF).details.map((d, i) => (
+                      <span key={i} className="wetsuit-tooltip-detail">• {d}</span>
+                    ))}
+                  </span>
                 </span>
               )}
             </div>
