@@ -298,7 +298,8 @@ body {
 
 .result-details {
   display: flex;
-  gap: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
   font-size: 0.85rem;
   color: var(--text-muted);
 }
@@ -855,18 +856,99 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+  .app {
+    padding: 1rem 0.75rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .app-header {
+    margin-bottom: 1.5rem;
+  }
+
   .app-layout {
     grid-template-columns: 1fr;
   }
+
   .app-left {
     position: static;
   }
+
   .form-row {
     grid-template-columns: 1fr;
   }
+
+  /* Result cards: stack vertically with breathing room */
   .result-card {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
+    padding: 0.85rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .result-rank {
+    font-size: 1.25rem;
+    min-width: 1.75rem;
+    padding-top: 0.1rem;
+  }
+
+  .result-location {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+
+  /* Wrap details into a grid so items don't squish */
+  .result-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .result-chevron {
+    display: none;
+  }
+
+  /* Detail hero: stack on mobile */
+  .detail-hero {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .detail-hero-right {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .detail-stat-value {
+    font-size: 1.1rem;
+  }
+
+  /* Wind chart: tighter on mobile */
+  .wind-bar-row {
+    grid-template-columns: 60px 1fr 36px 44px;
+    gap: 0.4rem;
+  }
+
+  .wind-bar-weekday {
+    font-size: 0.75rem;
+  }
+
+  .wind-bar-date {
+    font-size: 0.65rem;
+  }
+
+  /* Wetsuit tooltip: position from top on mobile to avoid clipping */
+  .wetsuit-tooltip {
+    bottom: auto;
+    top: calc(100% + 8px);
+    left: auto;
+    right: 0;
+    transform: none;
+    min-width: 220px;
   }
 }
 
