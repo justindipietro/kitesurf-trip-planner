@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import * as fc from "fast-check";
-import { calculateAverageWindSpeed, fetchWindData } from "./windService";
+import { calculateAverageWindSpeed, fetchWindData, clearFetchCache } from "./windService";
 import type { Location } from "../types";
 
 // Feature: kitesurf-trip-planner, Property 8: Wind speed averaging is correct
@@ -78,6 +78,7 @@ describe("Property 8: Wind speed averaging is correct", () => {
 describe("Property 13: Graceful exclusion of locations with missing data", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    clearFetchCache();
   });
 
   /**
@@ -119,6 +120,7 @@ describe("Property 13: Graceful exclusion of locations with missing data", () =>
   it("locations with missing wind data are excluded and locations with valid data are preserved", async () => {
     await fc.assert(
       fc.asyncProperty(locationsWithSubsetsArb, async ({ locations, missingSet }) => {
+        clearFetchCache();
         const startDate = new Date("2025-07-01");
         const endDate = new Date("2025-07-03");
 

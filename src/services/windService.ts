@@ -1,6 +1,45 @@
 import type { Location, WindData } from "../types";
 
 /**
+ * Simple in-memory fetch cache with 3-hour TTL.
+ * Deduplicates concurrent requests to the same URL.
+ */
+const CACHE_TTL_MS = 3 * 60 * 60 * 1000;
+const fetchCache = new Map<string, { data: unknown; timestamp: number }>();
+const inflightRequests = new Map<string, Promise<unknown>>();
+
+/** Clears the in-memory fetch cache. Exported for testing. */
+export function clearFetchCache(): void {
+  fetchCache.clear();
+  inflightRequests.clear();
+}
+
+async function cachedFetchJson(url: string): Promise<unknown> {
+  const cached = fetchCache.get(url);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  // Deduplicate concurrent requests to the same URL
+  const inflight = inflightRequests.get(url);
+  if (inflight) return inflight;
+
+  const promise = fetch(url).then(async (res) => {
+    if (!res.ok) throw new Error(`API returned ${res.status}`);
+    const data = await res.json();
+    fetchCache.set(url, { data, timestamp: Date.now() });
+    inflightRequests.delete(url);
+    return data;
+  }).catch((err) => {
+    inflightRequests.delete(url);
+    throw err;
+  });
+
+  inflightRequests.set(url, promise);
+  return promise;
+}
+
+/**
  * Formats a Date as a YYYY-MM-DD string for the Open-Meteo API.
  */
 function formatDate(date: Date): string {
@@ -49,15 +88,12 @@ export async function fetchWindData(
     locations.map(async (location) => {
       // Fetch wind + air temp (hourly, daytime filtered)
       const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&hourly=wind_speed_10m,temperature_2m&start_date=${start}&end_date=${end}&timezone=auto`;
-      const weatherResponse = await fetch(weatherUrl);
-      if (!weatherResponse.ok) {
-        throw new Error(`API returned ${weatherResponse.status} for ${location.name}`);
-      }
-      const weatherData = await weatherResponse.json();
+      const weatherData = await cachedFetchJson(weatherUrl) as Record<string, unknown>;
 
-      const hourlyTimes: string[] | undefined = weatherData?.hourly?.time;
-      const hourlySpeeds: number[] | undefined = weatherData?.hourly?.wind_speed_10m;
-      const hourlyTemps: number[] | undefined = weatherData?.hourly?.temperature_2m;
+      const hourly = weatherData?.hourly as Record<string, unknown> | undefined;
+      const hourlyTimes = hourly?.time as string[] | undefined;
+      const hourlySpeeds = hourly?.wind_speed_10m as number[] | undefined;
+      const hourlyTemps = hourly?.temperature_2m as number[] | undefined;
 
       if (!hourlyTimes || !hourlySpeeds || hourlySpeeds.length === 0) {
         return null;
@@ -96,9 +132,23 @@ export async function fetchWindData(
         ? celsiusToFahrenheit(daytimeTempsC.reduce((a, b) => a + b, 0) / daytimeTempsC.length)
         : undefined;
 
-      // Water temp: Open-Meteo marine API doesn't provide ocean temperature
-      // in the forecast endpoint, so we skip it for now
-      const averageWaterTempF: number | undefined = undefined;
+      // Water temp from marine API (best-effort)
+      let averageWaterTempF: number | undefined = undefined;
+      try {
+        const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${location.latitude}&longitude=${location.longitude}&hourly=sea_surface_temperature&start_date=${start}&end_date=${end}&timezone=auto`;
+        const marineData = await cachedFetchJson(marineUrl) as Record<string, unknown>;
+        const hourly = marineData?.hourly as Record<string, unknown> | undefined;
+        const waterTemps = hourly?.sea_surface_temperature as number[] | undefined;
+        if (waterTemps && waterTemps.length > 0) {
+          const validTemps = waterTemps.filter((t: number) => t != null && !isNaN(t));
+          if (validTemps.length > 0) {
+            const avgC = validTemps.reduce((a: number, b: number) => a + b, 0) / validTemps.length;
+            averageWaterTempF = celsiusToFahrenheit(avgC);
+          }
+        }
+      } catch {
+        // Marine API failure is non-fatal — water temp just won't show
+      }
 
       return {
         locationName: location.name,
