@@ -76,5 +76,7 @@ export function rankDestinations(
     travelDetail: d.travelDetail,
     dailyWindKnots: d.dailyWindKnots,
     location: d.location,
+    averageAirTempF: d.averageAirTempF,
+    averageWaterTempF: d.averageWaterTempF,
   }));
 }

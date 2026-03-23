@@ -99,6 +99,8 @@ function App() {
           averageWindSpeedKnots: wind.averageWindSpeedKnots,
           travelDetail,
           dailyWindKnots: wind.dailyWindKnots,
+          averageAirTempF: wind.averageAirTempF,
+          averageWaterTempF: wind.averageWaterTempF,
         });
       }
 

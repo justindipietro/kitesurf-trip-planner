@@ -42,6 +42,8 @@ export interface WindData {
   locationName: string;
   averageWindSpeedKnots: number;
   dailyWindKnots?: DailyWind[];
+  averageAirTempF?: number;
+  averageWaterTempF?: number;
 }
 
 /** Daily wind speed for a single day */
@@ -91,6 +93,8 @@ export interface DestinationWithData {
   averageWindSpeedKnots: number;
   travelDetail: DriveDetail | FlightDetail;
   dailyWindKnots?: DailyWind[];
+  averageAirTempF?: number;
+  averageWaterTempF?: number;
 }
 
 /** Final ranked result for display */
@@ -101,6 +105,8 @@ export interface RankedDestination {
   travelDetail: DriveDetail | FlightDetail;
   dailyWindKnots?: DailyWind[];
   location?: Location;
+  averageAirTempF?: number;
+  averageWaterTempF?: number;
 }
 
 /** Validation result returned by the validation module */

@@ -91,6 +91,18 @@ export function DestinationDetail({ destination, origin, onBack }: DestinationDe
               <span className="detail-stat-unit">good days</span>
             </div>
           )}
+          {destination.averageAirTempF != null && (
+            <div className="detail-stat">
+              <span className="detail-stat-value">{Math.round(destination.averageAirTempF)}°F</span>
+              <span className="detail-stat-unit">air temp</span>
+            </div>
+          )}
+          {destination.averageWaterTempF != null && (
+            <div className="detail-stat">
+              <span className="detail-stat-value">{Math.round(destination.averageWaterTempF)}°F</span>
+              <span className="detail-stat-unit">water temp</span>
+            </div>
+          )}
         </div>
       </div>
 

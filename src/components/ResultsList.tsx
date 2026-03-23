@@ -104,6 +104,16 @@ export function ResultsList({
                   )}
                 </>
               )}
+              {dest.averageAirTempF != null && (
+                <span className="result-temp" data-testid="air-temp">
+                  🌡️ {Math.round(dest.averageAirTempF)}°F
+                </span>
+              )}
+              {dest.averageWaterTempF != null && (
+                <span className="result-temp water" data-testid="water-temp">
+                  🌊 {Math.round(dest.averageWaterTempF)}°F
+                </span>
+              )}
             </div>
           </div>
           <span className="result-chevron">›</span>

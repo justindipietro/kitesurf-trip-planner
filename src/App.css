@@ -325,6 +325,15 @@ body {
   font-weight: 600;
 }
 
+.result-temp {
+  color: #fb923c;
+  font-weight: 500;
+}
+
+.result-temp.water {
+  color: #38bdf8;
+}
+
 /* Date Picker */
 .datepicker-wrapper {
   position: relative;
