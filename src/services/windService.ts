@@ -96,25 +96,9 @@ export async function fetchWindData(
         ? celsiusToFahrenheit(daytimeTempsC.reduce((a, b) => a + b, 0) / daytimeTempsC.length)
         : undefined;
 
-      // Fetch water temp from marine API (best effort)
-      let averageWaterTempF: number | undefined;
-      try {
-        const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${location.latitude}&longitude=${location.longitude}&daily=wave_height_max,ocean_temperature_2m_max&start_date=${start}&end_date=${end}&timezone=auto`;
-        const marineResponse = await fetch(marineUrl);
-        if (marineResponse.ok) {
-          const marineData = await marineResponse.json();
-          const waterTemps: number[] | undefined = marineData?.daily?.ocean_temperature_2m_max;
-          if (waterTemps && waterTemps.length > 0) {
-            const validTemps = waterTemps.filter((t: number) => t != null);
-            if (validTemps.length > 0) {
-              const avgC = validTemps.reduce((a: number, b: number) => a + b, 0) / validTemps.length;
-              averageWaterTempF = celsiusToFahrenheit(avgC);
-            }
-          }
-        }
-      } catch {
-        // Water temp is best-effort, don't fail the whole location
-      }
+      // Water temp: Open-Meteo marine API doesn't provide ocean temperature
+      // in the forecast endpoint, so we skip it for now
+      const averageWaterTempF: number | undefined = undefined;
 
       return {
         locationName: location.name,
