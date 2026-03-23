@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { RankedDestination } from "../types";
 import { getWetsuitRecommendation } from "../domain/wetsuit";
 
@@ -60,6 +61,7 @@ function airlineBookUrl(airline: string, origin: string, dest: string): string {
 
 export function DestinationDetail({ destination, origin, onBack }: DestinationDetailProps) {
   const { dailyWindKnots, travelDetail, location } = destination;
+  const [expandedDay, setExpandedDay] = useState<string | null>(null);
   const maxWind = dailyWindKnots
     ? Math.max(...dailyWindKnots.map((d) => d.windSpeedKnots), 1)
     : 1;
@@ -167,27 +169,68 @@ export function DestinationDetail({ destination, origin, onBack }: DestinationDe
             {dailyWindKnots.map((day) => {
               const label = windLabel(day.windSpeedKnots);
               const dayInfo = formatDay(day.date);
+              const isExpanded = expandedDay === day.date;
+              const hasHourly = day.hourly && day.hourly.length > 0;
+              const maxHourlyWind = hasHourly
+                ? Math.max(...day.hourly!.map((h) => h.windSpeedKnots), 1)
+                : 1;
               return (
-                <div key={day.date} className="wind-bar-row">
-                  <div className="wind-bar-day">
-                    <span className="wind-bar-weekday">{dayInfo.weekday}</span>
-                    <span className="wind-bar-date">{dayInfo.date}</span>
+                <div key={day.date} className="wind-day-group">
+                  <div
+                    className={`wind-bar-row ${hasHourly ? "clickable" : ""}`}
+                    onClick={() => hasHourly && setExpandedDay(isExpanded ? null : day.date)}
+                    role={hasHourly ? "button" : undefined}
+                    tabIndex={hasHourly ? 0 : undefined}
+                    onKeyDown={hasHourly ? (e) => { if (e.key === "Enter" || e.key === " ") setExpandedDay(isExpanded ? null : day.date); } : undefined}
+                  >
+                    <div className="wind-bar-day">
+                      <span className="wind-bar-weekday">
+                        {hasHourly && <span className={`wind-expand-icon ${isExpanded ? "open" : ""}`}>▸</span>}
+                        {dayInfo.weekday}
+                      </span>
+                      <span className="wind-bar-date">{dayInfo.date}</span>
+                    </div>
+                    <div className="wind-bar-track">
+                      <div
+                        className="wind-bar-fill"
+                        style={{
+                          width: `${Math.max((day.windSpeedKnots / maxWind) * 100, 3)}%`,
+                          background: windBarColor(day.windSpeedKnots),
+                        }}
+                      />
+                    </div>
+                    <span className="wind-bar-value">
+                      {day.windSpeedKnots.toFixed(1)}
+                    </span>
+                    <span className={`wind-bar-badge ${label.className}`}>
+                      {label.text}
+                    </span>
                   </div>
-                  <div className="wind-bar-track">
-                    <div
-                      className="wind-bar-fill"
-                      style={{
-                        width: `${Math.max((day.windSpeedKnots / maxWind) * 100, 3)}%`,
-                        background: windBarColor(day.windSpeedKnots),
-                      }}
-                    />
-                  </div>
-                  <span className="wind-bar-value">
-                    {day.windSpeedKnots.toFixed(1)}
-                  </span>
-                  <span className={`wind-bar-badge ${label.className}`}>
-                    {label.text}
-                  </span>
+                  {isExpanded && day.hourly && (
+                    <div className="hourly-wind-panel">
+                      {day.hourly.map((h) => {
+                        const hLabel = windLabel(h.windSpeedKnots);
+                        const ampm = h.hour < 12 ? "AM" : "PM";
+                        const displayHour = h.hour === 0 ? 12 : h.hour > 12 ? h.hour - 12 : h.hour;
+                        return (
+                          <div key={h.hour} className="hourly-wind-row">
+                            <span className="hourly-time">{displayHour}{ampm}</span>
+                            <div className="hourly-bar-track">
+                              <div
+                                className="hourly-bar-fill"
+                                style={{
+                                  width: `${Math.max((h.windSpeedKnots / maxHourlyWind) * 100, 3)}%`,
+                                  background: windBarColor(h.windSpeedKnots),
+                                }}
+                              />
+                            </div>
+                            <span className="hourly-value">{h.windSpeedKnots.toFixed(1)}</span>
+                            <span className={`hourly-badge ${hLabel.className}`}>{hLabel.text}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               );
             })}

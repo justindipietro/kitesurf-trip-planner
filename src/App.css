@@ -1108,3 +1108,100 @@ body {
   left: 0;
   color: var(--surface-light);
 }
+
+/* Hourly wind expansion */
+.wind-day-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.wind-bar-row.clickable {
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.wind-bar-row.clickable:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.wind-expand-icon {
+  display: inline-block;
+  font-size: 0.6rem;
+  margin-right: 0.25rem;
+  transition: transform 0.2s;
+  color: var(--text-muted);
+}
+
+.wind-expand-icon.open {
+  transform: rotate(90deg);
+}
+
+.hourly-wind-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  margin-left: 0.5rem;
+  border-left: 2px solid var(--surface-light);
+  animation: fadeIn 0.15s ease;
+}
+
+.hourly-wind-row {
+  display: grid;
+  grid-template-columns: 48px 1fr 36px 44px;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0;
+}
+
+.hourly-time {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.hourly-bar-track {
+  height: 16px;
+  background: var(--bg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.hourly-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  min-width: 3px;
+  transition: width 0.3s ease;
+}
+
+.hourly-value {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.hourly-badge {
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .hourly-wind-panel {
+    padding-left: 1rem;
+    margin-left: 0.25rem;
+  }
+
+  .hourly-wind-row {
+    grid-template-columns: 40px 1fr 32px 38px;
+    gap: 0.3rem;
+  }
+}

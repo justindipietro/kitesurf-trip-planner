@@ -100,28 +100,34 @@ export async function fetchWindData(
       }
 
       // Group hourly data by date, filtering to daytime hours (7AM-7PM local)
-      const dayMap = new Map<string, number[]>();
+      const dayMap = new Map<string, { speeds: number[]; hours: { hour: number; speedKmh: number }[] }>();
       const daytimeTempsC: number[] = [];
       for (let i = 0; i < hourlyTimes.length; i++) {
         const timestamp = hourlyTimes[i];
         const hour = parseInt(timestamp.slice(11, 13), 10);
         if (hour < 7 || hour >= 19) continue;
         const date = timestamp.slice(0, 10);
-        if (!dayMap.has(date)) dayMap.set(date, []);
-        dayMap.get(date)!.push(hourlySpeeds[i]);
+        if (!dayMap.has(date)) dayMap.set(date, { speeds: [], hours: [] });
+        const entry = dayMap.get(date)!;
+        entry.speeds.push(hourlySpeeds[i]);
+        entry.hours.push({ hour, speedKmh: hourlySpeeds[i] });
         if (hourlyTemps && hourlyTemps[i] != null) {
           daytimeTempsC.push(hourlyTemps[i]);
         }
       }
 
-      // Build daily wind breakdown from daytime averages
-      const dailyWindKnots: { date: string; windSpeedKnots: number }[] = [];
+      // Build daily wind breakdown from daytime averages with hourly detail
+      const dailyWindKnots: { date: string; windSpeedKnots: number; hourly: { hour: number; windSpeedKnots: number }[] }[] = [];
       const allDaytimeSpeedsKnots: number[] = [];
 
-      for (const [date, speeds] of dayMap) {
+      for (const [date, { speeds, hours }] of dayMap) {
         const avgKmh = speeds.reduce((a, b) => a + b, 0) / speeds.length;
         const avgKnots = avgKmh / 1.852;
-        dailyWindKnots.push({ date, windSpeedKnots: avgKnots });
+        dailyWindKnots.push({
+          date,
+          windSpeedKnots: avgKnots,
+          hourly: hours.map((h) => ({ hour: h.hour, windSpeedKnots: h.speedKmh / 1.852 })),
+        });
         allDaytimeSpeedsKnots.push(avgKnots);
       }
 

@@ -50,6 +50,13 @@ export interface WindData {
 export interface DailyWind {
   date: string; // YYYY-MM-DD
   windSpeedKnots: number;
+  hourly?: HourlyWind[];
+}
+
+/** Hourly wind speed for a single hour */
+export interface HourlyWind {
+  hour: number; // 0-23
+  windSpeedKnots: number;
 }
 
 /** Drive data returned by the Travel Service */
